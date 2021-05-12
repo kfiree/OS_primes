@@ -32,6 +32,14 @@ int inc_counter(counter_t *c)  {
   return rc;
 }
 
+int inc_sum(counter_t *c, int num)  {
+  pthread_mutex_lock(&c->lock);
+  int rc = c->value+=num;
+  pthread_mutex_unlock(&c->lock);
+  return rc;
+}
+
+
 int get_counter(counter_t *c)  {
   pthread_mutex_lock(&c->lock);
   int rc = c->value;
