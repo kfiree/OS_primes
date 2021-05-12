@@ -9,8 +9,9 @@
 #define OUTPUT 1
 
 counter_t sum;
-pthread_mutex_t  sumLock;
+pthread_mutex_t  rndLock;
 counter_t numCtr;
+counter_t primeCtr;
 int numbersNum;
 int rndSeed;
 // long sum = 0;
@@ -22,13 +23,15 @@ bool checkPrime(int threadid, int random)
   for (int i=2; i<=halfOfn; i++){
     if (random % i == 0)
     {
+      // printf("%ld --- not prime number", random);
       return false;
     }
   }
 
+  // printf("%ld ----  prime number", random);
   inc_sum(&sum, random);
+  inc_counter(&primeCtr);
 
-  inc_counter(&numCtr);
   return true;
 // #if OUTPUT
 
@@ -64,10 +67,16 @@ bool checkPrime(int threadid, int random)
 
 void * generateAndCheck(int threadid)
 {
-  while (get_counter(&numCtr) < numbersNum)
+  // int i = 1;
+  while (inc_counter(&numCtr) <= numbersNum)
   { 
       //init random generator
+      pthread_mutex_lock(&rndLock);
+      int rnd = rand();
+      pthread_mutex_unlock(&rndLock);
+
       checkPrime(threadid, rand());
+
   }  
   return NULL;
 }
@@ -81,17 +90,19 @@ int main(int argc, char *argv[])
   init_counter(&sum);
   init_counter(&numCtr);
 
-  srand(rndSeed);
+  
 
 	if(argc != 3) {
 	    printf("Too few arguments ");
 	    printf("USAGE: ./primeCalc <prime pivot> <num of random numbers>");
             exit(0);
-    	}
+  }
 
 	rndSeed = atoi(argv[1]);
 	numbersNum = atoi(argv[2]);
 
+  srand(rndSeed);
+ 
 	// long primeCounter = 0;
 
   pthread_create(&p1, NULL, (void *) generateAndCheck, 1);  // CREATE PRIME GENERATOR THREAD 1
@@ -112,7 +123,7 @@ int main(int argc, char *argv[])
   pthread_join(p7, NULL);
   pthread_join(p8, NULL);
 
-  printf("%ld,%ld",sum , get_counter(&numCtr));
+  printf("%ld,%ld \n",get_counter(&sum) , get_counter(&primeCtr));
 
   return 0;
 }
