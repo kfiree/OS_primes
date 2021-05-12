@@ -16,7 +16,7 @@ int numbersNum;
 int rndSeed;
 // long sum = 0;
 	
-bool checkPrime(int threadid, int random)
+bool checkPrime(int random)
 {
   // int n = inc_counter(&primessearch);
   int halfOfn = random / 2;
@@ -65,17 +65,17 @@ bool checkPrime(int threadid, int random)
 // #endif
 }
 
-void * generateAndCheck(int threadid)
+void * generateAndCheck()
 {
   // int i = 1;
   while (inc_counter(&numCtr) <= numbersNum)
   { 
       //init random generator
-      pthread_mutex_lock(&rndLock);
-      int rnd = rand();
-      pthread_mutex_unlock(&rndLock);
+      // pthread_mutex_lock(&rndLock);
+      // int rnd = rand();
+      // pthread_mutex_unlock(&rndLock);
 
-      checkPrime(threadid, rand());
+      checkPrime(rand());
 
   }  
   return NULL;
