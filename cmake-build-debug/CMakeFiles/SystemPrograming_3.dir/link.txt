@@ -1,0 +1,1 @@
+/usr/bin/cc -g CMakeFiles/SystemPrograming_3.dir/primes.c.o CMakeFiles/SystemPrograming_3.dir/counter.c.o -o SystemPrograming_3 
