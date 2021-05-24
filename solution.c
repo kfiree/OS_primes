@@ -72,7 +72,7 @@ void * generateAndCheck(int threadId)
 
 int main(int argc, char *argv[])
 {
-    if(argc != 4) {
+    if(argc != 3) {
         printf("Too few arguments ");
         printf("USAGE: ./primeCalc <prime pivot> <num of random numbers>");
         exit(0);
@@ -85,8 +85,8 @@ int main(int argc, char *argv[])
     srand(rndSeed);
 
     // cpu number
-    // cpuSize = get_nprocs_conf();
-    cpuSize = atoi(argv[3]);
+     cpuSize = 2*get_nprocs_conf();
+    //cpuSize = atoi(argv[3]);
 
     // printf("      === random numbers ===         \n");
     // randoms
